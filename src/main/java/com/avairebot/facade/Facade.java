@@ -5,13 +5,19 @@ import com.avairebot.facade.filters.HttpFilter;
 import com.avairebot.facade.handlers.SparkExceptionHandler;
 import com.avairebot.facade.routes.GetRoot;
 import com.avairebot.facade.routes.NotFoundRoute;
+import com.avairebot.facade.routes.PostVote;
 import com.avairebot.shared.ExitCodes;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Spark;
 
 public class Facade {
+
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    public static final OkHttpClient CLIENT = new OkHttpClient();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Facade.class);
 
@@ -48,6 +54,7 @@ public class Facade {
         Spark.before(new HttpFilter());
 
         Spark.get("/", new GetRoot(this));
+        Spark.post("/vote", new PostVote(this));
 
         Spark.init();
     }
