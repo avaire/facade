@@ -1,4 +1,13 @@
 
+# The port that the outwards facing public API should be linked to.
+#
+port: 1257
+
+# The address that should be queried for API requests when the
+# request doesn't already exists in the cache.
+#
+avaireApi: '127.0.0.1:1256'
+
 # The whitelist is a list of IP addresses that can make requests
 # to the API without any API keys and with limit constraints.
 #

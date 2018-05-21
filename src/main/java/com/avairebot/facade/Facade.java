@@ -1,10 +1,15 @@
 package com.avairebot.facade;
 
 import com.avairebot.facade.config.Configuration;
+import com.avairebot.facade.filters.HttpFilter;
+import com.avairebot.facade.handlers.SparkExceptionHandler;
+import com.avairebot.facade.routes.GetRoot;
+import com.avairebot.facade.routes.NotFoundRoute;
 import com.avairebot.shared.ExitCodes;
 import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import spark.Spark;
 
 public class Facade {
 
@@ -33,6 +38,18 @@ public class Facade {
 
             System.exit(ExitCodes.EXIT_CODE_NORMAL);
         }
+
+        Spark.port(config.getInt("port", 1257));
+
+        //noinspection unchecked
+        Spark.exception(Exception.class, new SparkExceptionHandler());
+        Spark.notFound(new NotFoundRoute(this));
+
+        Spark.before(new HttpFilter());
+
+        Spark.get("/", new GetRoot(this));
+
+        Spark.init();
     }
 
     public static String getVersionInfo() {
@@ -51,5 +68,13 @@ public class Facade {
 
     public static Logger getLogger() {
         return LOGGER;
+    }
+
+    public Configuration getConfig() {
+        return config;
+    }
+
+    public CommandLine getCommand() {
+        return command;
     }
 }
