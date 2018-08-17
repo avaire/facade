@@ -43,6 +43,22 @@ abstract class Request
      */
     protected $route = '/';
 
+    /**
+     * An array of form paramaters that should be sent along with the request.
+     *
+     * @var Array
+     */
+    protected $formParams = [];
+
+    /**
+     * An array of headers that should be sent along with the request.
+     *
+     * @var Array
+     */
+    protected $headers = [
+        'User-Agent' => 'AvaFacade (https://github.com/avaire/facade, 1.0)'
+    ];
+
     public function __construct($method = null)
     {
         $this->endpoint = env('API_ENDPOINT', null);
@@ -65,10 +81,13 @@ abstract class Request
      * 
      * @return App\Http\Requests\Request
      */
-    public function send()
+    public function send($param = [], $headers = [])
     {
         try {
-            $this->response = $this->client->request($this->requestMethod, $this->route);
+            $this->response = $this->client->request($this->requestMethod, $this->route, [
+                'body' => json_encode(array_merge($this->formParams, $param)),
+                'headers' => array_merge($this->headers, $headers),
+            ]);
         } catch (BadResponseException $e) {
             $this->response = $e->getResponse();
         }
