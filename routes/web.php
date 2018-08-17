@@ -12,7 +12,7 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return redirect()->to('https://avairebot.com/');
 });
 
 $router->group(['prefix' => 'v1'], function () use ($router) {
