@@ -17,4 +17,5 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->get('/stats', 'StatsController@index');
+    $router->get('/metrics', 'MetricsController@index');
 });

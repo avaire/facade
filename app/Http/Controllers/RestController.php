@@ -49,7 +49,7 @@ class RestController extends Controller
                 : Cache::get($key);
         }
 
-        if ( $request->send()->isSuccess()) {
+        if (! $request->send()->isSuccess()) {
             Log::error("An API request to '{$request->route()}' resulted in an error with status code: {$request->response()->getStatusCode()}\n", [
                 'response' => $request->bodyAsArray()
             ]);
