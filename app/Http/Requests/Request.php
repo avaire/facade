@@ -59,7 +59,7 @@ abstract class Request
         'User-Agent' => 'AvaFacade (https://github.com/avaire/facade, 1.0)'
     ];
 
-    public function __construct($method = null)
+    public function __construct($addToRoute = null)
     {
         $this->endpoint = env('API_ENDPOINT', null);
         if ($this->endpoint == null) {
@@ -71,8 +71,8 @@ abstract class Request
             'timeout'  => 3.5,
         ]);
 
-        if ($method !== null) {
-            $this->requestMethod = strtoupper($method);
+        if ($addToRoute !== null) {
+            $this->route .= $addToRoute;
         }
     }
 

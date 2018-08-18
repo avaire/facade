@@ -14,12 +14,7 @@ class MetricsController extends RestController
      */
     public function index()
     {
-        $response = $this->cacheRequest('metrics', 10, new MetricsRequest, function () {
-            return [
-                'status' => 500,
-                'reason' => 'Sending an API request to the internal metrics endpoint resulted in a failuer.'
-            ];
-        }, false);
+        $response = $this->cacheRequest('metrics', 10, new MetricsRequest, null, false);
 
         if (json_decode($response, true) !== null) {
             return response($response, 500)->withHeaders([

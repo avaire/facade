@@ -12,8 +12,7 @@ class VoteController extends RestController
      * Forwards the vote request to the internal API endpoint of
      * the request has the required form fields and headers.
      *
-     * @param Illuminate\Http\Request  $request
-     *
+     * @param  Illuminate\Http\Request  $request
      * @return Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -47,7 +46,6 @@ class VoteController extends RestController
      * logging the request to the log file so debugging.
      *
      * @param Illuminate\Http\Request  $request
-     *
      * @return Illuminate\Http\Response
      */
     protected function sendFailedValidationResponse(Request $request)

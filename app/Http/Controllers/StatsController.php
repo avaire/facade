@@ -14,12 +14,7 @@ class StatsController extends RestController
      */
     public function index()
     {
-        $response = $this->cacheRequest('stats', 25, new StatsRequest, function () {
-            return [
-                'status' => 500,
-                'reason' => 'Sending an API request to the internal stats endpoint resulted in a failuer.'
-            ];
-        });
+        $response = $this->cacheRequest('stats', 25, new StatsRequest);
 
         return $this->sendResponse($response);
     }
