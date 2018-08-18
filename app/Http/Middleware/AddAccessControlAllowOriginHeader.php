@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class ExampleMiddleware
+class AddAccessControlAllowOriginHeader
 {
     /**
      * Handle an incoming request.
@@ -15,6 +15,10 @@ class ExampleMiddleware
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        $response = $next($request);
+
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
     }
 }
