@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Cache;
+use App\Http\Requests\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Lumen\Routing\Controller;
 
 class RestController extends Controller
@@ -14,7 +14,7 @@ class RestController extends Controller
      * Build the JSON response from the array response that
      * was returned by the cache, or the request body.
      *
-     * @param  Array    $response
+     * @param  Array  $response
      * @param  Integer  $statusCode
      * @return Illuminate\Http\Response
      */
@@ -32,11 +32,11 @@ class RestController extends Controller
      * return the response from the request, on failuer, the failuer callback
      * will be invoked and the result of that will be returned instead.
      *
-     * @param  String                      $key
-     * @param  int                         $seconds
+     * @param  String  $key
+     * @param  int  $seconds
      * @param  \App\Http\Requests\Request  $request
-     * @param  Function                    $failuer
-     * @param  Boolean                     $asArray
+     * @param  Function  $failuer
+     * @param  Boolean  $asArray
      * @return Array|String
      */
     protected function cacheRequest($key, $seconds, Request $request, $failuer = null, $asArray = true)

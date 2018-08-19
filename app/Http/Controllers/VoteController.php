@@ -31,7 +31,6 @@ class VoteController extends RestController
      * headers, and that they're of the right type.
      *
      * @param Illuminate\Http\Request  $request
-     *
      * @return Boolean
      */
     protected function isValidRequest(Request $request)
