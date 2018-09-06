@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Snapshot;
+use Illuminate\Http\Request;
 use App\Http\Requests\StatsRequest;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Discord\FakeStatsResponse;
@@ -35,6 +37,20 @@ class StatsController extends RestController
         }
 
         return $this->sendResponse($response);
+    }
+
+    /**
+     * Loads the global timeseries stats from the cache, or if it doesn't
+     * exists, the database will be queried for the data instead.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Pagination\Paginator
+     */
+    public function timeseries(Request $request)
+    {
+        return Cache::remember('stats.timeseries.' . $request->get('page', 1), 1, function () {
+            return Snapshot::orderBy('id', 'desc')->paginate(4320); // 90 days
+        });
     }
 
     /**

@@ -18,6 +18,7 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->get('/leaderboard/{guildId}', 'LeaderboardController@index');
     $router->get('/metrics', 'MetricsController@index');
+    $router->get('/stats/timeseries', 'StatsController@timeseries');
     $router->get('/stats', 'StatsController@index');
     $router->post('/vote', 'VoteController@index');
 });
