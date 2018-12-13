@@ -61,7 +61,7 @@ abstract class Request
 
     public function __construct($addToRoute = null)
     {
-        $this->endpoint = env('API_ENDPOINT', null);
+        $this->endpoint = $this->getEndpoint();
         if ($this->endpoint == null) {
             throw new UnexpectedValueException('The request API endpoint can not be NULL!');
         }
@@ -74,6 +74,16 @@ abstract class Request
         if ($addToRoute !== null) {
             $this->route .= $addToRoute;
         }
+    }
+
+    /**
+     * Gets the endpointn that should be used for the API requests.
+     * 
+     * @return String|null
+     */
+    public function getEndpoint()
+    {
+        return env('API_ENDPOINT', null);
     }
 
     /**
