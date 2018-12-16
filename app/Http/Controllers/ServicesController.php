@@ -50,8 +50,7 @@ class ServicesController extends RestController
             $services[$this->services[$name]['label']] = [
                 'name' => $this->services[$name]['name'],
                 'health' => $target['health'],
-                'lastError' => strlen($target['lastError']) > 0 ? $target['lastError'] : null,
-                'lastScrape' => $target['lastScrape'],
+                'lastCheck' => $target['lastScrape'],
             ];
         }
 
