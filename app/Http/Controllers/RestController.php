@@ -47,24 +47,42 @@ class RestController extends Controller
                 : Cache::get($key);
         }
 
-        if (! $request->send()->isSuccess()) {
-            Log::error("An API request to '{$request->route()}' resulted in an error with status code: {$request->response()->getStatusCode()}\n", [
-                'response' => $request->bodyAsArray()
-            ]);
+        try {
+            if (! $request->send()->isSuccess()) {
+                Log::error("An API request to '{$request->route()}' resulted in an error with status code: {$request->response()->getStatusCode()}\n", [
+                    'response' => $request->bodyAsArray()
+                ]);
 
-            $result = $failuer == null || !is_callable($failuer) ? null : $failuer($request);
-            if ($result == null) {
-                $result = [
-                    'status' => 500,
-                    'reason' => 'Sending an API request to the internal ' . $request->route() . ' endpoint resulted in a failuer.'
-                ];
+                return $this->handleAndBuildFailuer($request, $failuer, $asArray);
             }
 
-            return $asArray ? $result : json_encode($result);
+            Cache::put($key, $request->body(), $seconds / 60);
+
+            return $asArray ? $request->bodyAsArray() : $request->body();
+        } catch (\Exception $e) {
+            return $this->handleAndBuildFailuer($request, $failuer, $asArray);
+        }
+    }
+
+    /**
+     * Formats, builds, and returns the failuer response using
+     * the given request, and the failuer object instance.
+     * 
+     * @param  \App\Http\Requests\Request  $request
+     * @param  Function  $failuer
+     * @param  Boolean  $asArray
+     * @return Array|String
+     */
+    private function handleAndBuildFailuer($request, $failuer, $asArray)
+    {
+        $result = $failuer == null || !is_callable($failuer) ? null : $failuer($request);
+        if ($result == null) {
+            return [
+                'status' => 500,
+                'reason' => 'Sending an API request to the internal ' . $request->route() . ' endpoint resulted in a failuer.'
+            ];
         }
 
-        Cache::put($key, $request->body(), $seconds / 60);
-
-        return $asArray ? $request->bodyAsArray() : $request->body();
+        return $asArray ? $result : json_encode($result);
     }
 }
