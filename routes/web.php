@@ -21,5 +21,6 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->get('/stats/timeseries', 'StatsController@timeseries');
     $router->get('/stats', 'StatsController@index');
     $router->get('/services', 'ServicesController@index');
+    $router->get('/votes/{userId}', 'VoteController@show');
     $router->post('/vote', 'VoteController@index');
 });
